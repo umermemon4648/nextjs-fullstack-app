@@ -9,7 +9,7 @@ export const connectToDB = async()=>{
             // useFindAndModify: false,
             useUnifiedTopology: true
         })
-        console.log(`Connection established to MongoDB ${con.host}`);
+        console.log(`🎉🔥 Connection established to MongoDB  ${con.host}`);
     } catch (error) {
         console.error(error)
     }
