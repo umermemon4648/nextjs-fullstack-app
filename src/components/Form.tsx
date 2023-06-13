@@ -56,7 +56,7 @@ const Form: React.FC = () => {
 
 <div className="container">
       <div className="text-center mb-4">
-<Link href="#" className="btn btn-dark mb-3">Display user</Link>
+<Link href="/table" className="btn btn-dark mb-3">Display user</Link>
          
          <h3>Add New User</h3>
          <p className="text-muted">Complete the form below to add a new user</p>

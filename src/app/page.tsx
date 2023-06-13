@@ -1,10 +1,11 @@
-import Hello from '../components/Hello'
+import Form from '@/components/Form'
+import Hello from '@/components/Hello'
 
 export default function Home() {
   return (
     <>
-    <h1>Hello! Dev</h1>
-    <Hello/>
+    {/* <Hello/> */}
+    <Form/>
     </>
   )
 }
