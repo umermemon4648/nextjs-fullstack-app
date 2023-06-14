@@ -10,7 +10,7 @@ export default asyncError(async(req, res) =>{
       
             const existingUser = await User.findById({_id: req.query.id})
             if (!existingUser) {
-                return res.status(400).json({success: false ,message:'Item not found'})
+                return res.status(400).json({success: false ,message:'User with this id does not found'})
             }
 
             // update the fields
