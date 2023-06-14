@@ -1,5 +1,7 @@
 import {connectToDB} from '../../../utils/db'
 import {User} from '../../../models/userModel'
+import {errorHandler} from '../../../middleware/errorHandler'
+
 export default async function handler(req,res){
 
     await connectToDB()
@@ -15,11 +17,11 @@ export default async function handler(req,res){
         await addedUser.save()
         res.status(200).json({success: true, addedUser})
     } catch (error) {
-        return res.status(500).json({erro:'Failed to add document'})
+        errorHandler(res)
     }
 }
     
     else{
-        return res.status(405).json({message:'This method is not allowed'})
+        errorHandler(res,405,'This method is not allowed')
     }
 }
