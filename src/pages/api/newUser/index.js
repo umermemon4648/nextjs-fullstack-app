@@ -6,6 +6,11 @@ export default async function handler(req,res){
     if (req.method ==="POST") {
         const {fname, lname, email, gender} = req.body
     try {    
+          // Check if email already exists
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        return res.status(400).json({success: true, message: 'Email already exists' });
+      }
         const addedUser = await User.create({fname, lname, email, gender})
         await addedUser.save()
         res.status(200).json({success: true, addedUser})
