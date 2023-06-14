@@ -1,13 +1,14 @@
 import {connectToDB} from '../../../utils/db'
 import {User} from '../../../models/userModel'
-import {errorHandler} from '../../../middleware/errorHandler'
+import {errorHandler, asyncError} from '../../../middleware/errorHandler'
 
-export default async function handler(req,res){
+
+export default asyncError(async(req, res) =>{
 
     await connectToDB()
     if (req.method ==="POST") {
         const {fname, lname, email, gender} = req.body
-    try {    
+   
           // Check if email already exists
       const existingUser = await User.findOne({ email });
       if (existingUser) {
@@ -16,12 +17,10 @@ export default async function handler(req,res){
         const addedUser = await User.create({fname, lname, email, gender})
         await addedUser.save()
         res.status(200).json({success: true, addedUser})
-    } catch (error) {
-        errorHandler(res)
-    }
+   
 }
     
     else{
         errorHandler(res,405,'This method is not allowed')
     }
-}
+})
