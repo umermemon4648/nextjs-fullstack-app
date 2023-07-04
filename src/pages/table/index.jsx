@@ -3,16 +3,8 @@ import { MdEditSquare } from 'react-icons/md';
 import { AiFillDelete } from 'react-icons/ai';
 import Link from 'next/link';
 
-async function getData() {
-    const res = await fetch('http://localhost:3000/api/allUser')
-//   const res = await fetch('https://jsonplaceholder.typicode.com/comments', {
-//     method: 'GET',
-//     headers: {
-//       'Content-Type': 'application/json',
-//       Accept: 'application/json',
-//     },
-//   });
-
+async function getUser() {
+    const res = await fetch('http://localhost:3000/api/allUser',{ cache: 'no-store' })
   if (!res.ok) {
     throw new Error('Failed to fetch data');
   }
@@ -20,8 +12,28 @@ async function getData() {
   return res.json();
 }
 
+async function deleteUser(userId) {
+  const res = await fetch(`http://localhost:3000/api/deleteUser?id=${userId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+if (!res.ok) {
+  throw new Error('Failed to fetch data');
+}
+
+return res.json();
+}
+
+
 export default function ({ data }) {
     console.log(data)
+    const deleteHandler = (id) =>{
+      alert(id)
+      deleteUser(id)
+
+    }
   return (
     <>
       <Head>
@@ -87,10 +99,10 @@ export default function ({ data }) {
                 <td className="px-6 py-4">{item.email}</td>
                 <td className="px-6 py-4">{item.gender}</td>
                 <td className="flex items-center px-6 py-4">
-                  <a href="#" className="link-dark">
+                  <a onClick={()=> deleteHandler(item._id)} href="#" className="link-dark">
                     <AiFillDelete style={{ color: 'red', fontSize: '1.8rem' }} />
                   </a>
-                  <a href="#" className="link-dark">
+                  <a href="" className="link-dark">
                     <MdEditSquare style={{ color: 'green', fontSize: '1.8rem' }} />
                   </a>
                 </td>
@@ -108,7 +120,7 @@ export default function ({ data }) {
 }
 
 export async function getServerSideProps() {
-  const data = await getData();
+  const data = await getUser();
   return {
     props: {
       data: data.savedUser,

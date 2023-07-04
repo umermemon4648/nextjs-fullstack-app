@@ -1,7 +1,9 @@
 "use client"
-import React, {ChangeEvent, useState} from 'react'
+import React, {ChangeEvent, useState, useEffect} from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
+
+import { useRouter  } from 'next/navigation'
 interface Data{
    fname: String;
    lname: String;
@@ -10,7 +12,7 @@ interface Data{
 }
 
 const Form: React.FC = () => {
-
+   const router = useRouter();
    const [formData, setFormData] = useState<Data>({
       fname: "",
       lname: '',
@@ -20,13 +22,12 @@ const Form: React.FC = () => {
    })
 console.log(formData)
    const getFormData = (e: ChangeEvent<HTMLInputElement>)=>{
-      e.preventDefault()
       const {name, value} = e.target
       setFormData({...formData, [name]: value})
       console.log(formData)
    }
 
-   const submitHandler = async(e: React.ChangeEvent<HTMLFormElement>)=>{
+   const submitHandler = async(e: React.FormEvent<HTMLFormElement>)=>{
       e.preventDefault()
       const {fname, lname, email, gender} = formData
       if(!(fname || lname || email || gender)){
@@ -35,13 +36,14 @@ console.log(formData)
 
       else{
          try {
-            await fetch('/api/addUser', {
+            await fetch('http://localhost:3000/api/newUser', {
                method: "POST",
                headers: {'Content-Type': 'application/json'},
                body: JSON.stringify({fname, lname, email, gender})
             })
+            router.push('/table');
 
-            window.location.href = '/table';
+            // window.location.href = '/table';
          } catch (error) {
             console.error("Error adding student:", error);
          }
@@ -49,7 +51,12 @@ console.log(formData)
 
    }
 
-  return (
+   // useEffect(()=>{
+   //    // submitHandler()
+   // },[])
+  
+  
+   return (
     <>
 
 <Head>
@@ -62,7 +69,7 @@ console.log(formData)
     </button>
 </Link>
 
-<form className='my-6 w-[80vw]' method='POST'>
+<form onSubmit={submitHandler} className='my-6 w-[80vw]' method='POST'>
    <div className='container border-2 mx-4'>
         <div className='mb-4'>
             <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First name</label>
