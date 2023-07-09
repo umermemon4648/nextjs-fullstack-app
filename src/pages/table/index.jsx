@@ -30,7 +30,7 @@ return res.json();
 export default function ({ data }) {
     console.log(data)
     const deleteHandler = (id) =>{
-      alert(id)
+      console.log(id)
       deleteUser(id)
 
     }
